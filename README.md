@@ -1,29 +1,10 @@
 # README #
 
-Stegory is
+### What is Stegory? ###
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
+* Stegory is a steganographic tool used to hide images or messages inside of other images.
+* Currently still in the startup stage of development, since no real 'releases' have been released as of yet.
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* Stegory is headed by me, hasherr, and you can contact me through eklein217@gmail.com if questions or concerns arise.
