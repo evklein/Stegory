@@ -7,12 +7,23 @@ import javax.swing.*;
  */
 public class MainForm
 {
-    private JPanel panel1;
-    private JTabbedPane mainPanel;
-    private JPanel imagePanel;
-    private JPanel messagePanel;
-    private JLabel messageLabel;
-    private JTextField messageField;
-    private JScrollBar scrollBar1;
-    private JScrollBar scrollBar2;
+    private JPanel mainPanel;
+    private JTabbedPane tabbedPane1;
+    private JTextField messageTextField;
+    private JButton selectCarrierButton;
+    private JButton hidePayloadButton;
+    private JProgressBar hidingPayloadProgressBar;
+    private JButton saveImageButton;
+    private JButton previewImageDataButton;
+    private JLabel enterMessageLabel;
+    private JLabel selectCarrierLabel;
+    private JLabel carrierSelectedLabel;
+    private JLabel previewImagePathLabel;
+    private JLabel finalizedImageLabel;
+    private JLabel previewImageLabel;
+
+    private void createUIComponents()
+    {
+        // TODO: place custom component creation code here
+    }
 }
