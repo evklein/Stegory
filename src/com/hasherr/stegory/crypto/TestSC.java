@@ -5,4 +5,5 @@ package com.hasherr.stegory.crypto;
  */
 public class TestSC
 {
+
 }
