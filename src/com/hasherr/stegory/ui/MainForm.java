@@ -9,18 +9,17 @@ public class MainForm
 {
     private JPanel mainPanel;
     private JTabbedPane tabbedPane1;
-    private JTextField messageTextField;
     private JButton selectCarrierButton;
     private JButton hidePayloadButton;
     private JProgressBar hidingPayloadProgressBar;
     private JButton saveImageButton;
     private JButton previewImageDataButton;
-    private JLabel enterMessageLabel;
-    private JLabel selectCarrierLabel;
-    private JLabel carrierSelectedLabel;
-    private JLabel previewImagePathLabel;
-    private JLabel finalizedImageLabel;
     private JLabel previewImageLabel;
+    private JPanel messagesPanel;
+    private JButton clearPageDataButton;
+    private JPanel imagesPanel;
+    private JButton selectPayloadImageButton;
+    private JButton selectCarrierImageButton;
 
     private void createUIComponents()
     {
