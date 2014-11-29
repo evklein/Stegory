@@ -20,6 +20,13 @@ public class MainForm
     private JPanel imagesPanel;
     private JButton selectPayloadImageButton;
     private JButton selectCarrierImageButton;
+    private JLabel carrierImagePath;
+    private JLabel payloadImagePath;
+    private JPanel carrierImageDataPanel;
+    private JPanel payloadImageDataPanel;
+    private JButton generateMessageButton;
+    private JProgressBar progressBar1;
+    private JTextArea textArea1;
 
     private void createUIComponents()
     {
