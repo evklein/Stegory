@@ -13,8 +13,6 @@ public class MainForm
     private JButton hidePayloadButton;
     private JProgressBar hidingPayloadProgressBar;
     private JButton saveImageButton;
-    private JButton previewImageDataButton;
-    private JLabel previewImageLabel;
     private JPanel messagesPanel;
     private JButton clearPageDataButton;
     private JPanel imagesPanel;
