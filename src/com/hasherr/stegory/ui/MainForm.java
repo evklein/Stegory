@@ -26,6 +26,11 @@ public class MainForm
     private JProgressBar progressBar1;
     private JTextArea textArea1;
 
+    public MainForm()
+    {
+
+    }
+
     private void createUIComponents()
     {
         // TODO: place custom component creation code here

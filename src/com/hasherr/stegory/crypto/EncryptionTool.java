@@ -13,15 +13,11 @@ import java.io.IOException;
  */
 public class EncryptionTool
 {
-    private BufferedImage carrier;
-    private BufferedImage message;
-    private Pixel[][] carrierPixels;
-    private Pixel[][] messagePixels;
+    private BufferedImage carrier, message;
+    private Pixel[][] carrierPixels, messagePixels;
     private int[] messageValues;
-
-    private StringBuilder redValueBuilder;
-    private StringBuilder blueValueBuilder;
-    private StringBuilder greenValueBuilder;
+    private StringBuilder builder;
+//    private StringBuilder redValueBuilder, blueValueBuilder, greenValueBuilder;
 
     public EncryptionTool(BufferedImage carrier, BufferedImage message) throws IOException
     {
@@ -31,9 +27,10 @@ public class EncryptionTool
         messagePixels = new Pixel[message.getWidth()][message.getHeight()];
         messageValues = new int[message.getWidth() * message.getHeight() * 9];
 
-        redValueBuilder = new StringBuilder();
-        blueValueBuilder = new StringBuilder();
-        greenValueBuilder = new StringBuilder();
+        builder = new StringBuilder();
+//        redValueBuilder = new StringBuilder();
+//        blueValueBuilder = new StringBuilder();
+//        greenValueBuilder = new StringBuilder();
 
         createPixelArrays();
     }
@@ -63,21 +60,30 @@ public class EncryptionTool
     {
         String messageBinary = Utilities.stringToBinary(message);
 
-        clearBuilderValues();
+//        clearBuilderValues();
         String red = Utilities.stringToBinary(carrier.getColor().getRed());
         String green = Utilities.stringToBinary(carrier.getColor().getGreen());
         String blue = Utilities.stringToBinary(carrier.getColor().getBlue());
 
         // Hide values HERE.
-        redValueBuilder.append(red.substring(0, 5) + messageBinary.substring(0, 3));
-        greenValueBuilder.append(green.substring(0, 6) + messageBinary.substring(3, 5));
-        blueValueBuilder.append(blue.substring(0, 5) + messageBinary.substring(5, 8));
+//        redValueBuilder.append(red.substring(0, 5) + messageBinary.substring(0, 3));
+//        greenValueBuilder.append(green.substring(0, 6) + messageBinary.substring(3, 5));
+//        blueValueBuilder.append(blue.substring(0, 5) + messageBinary.substring(5, 8));
 
-        int rVal = Integer.parseInt(Utilities.binaryToString(redValueBuilder.toString()));
-        int gVal = Integer.parseInt(Utilities.binaryToString(greenValueBuilder.toString()));
-        int bVal = Integer.parseInt(Utilities.binaryToString(blueValueBuilder.toString()));
+        int r = hideBits(red.substring(0, 5), messageBinary.substring(0, 3));
+        int g = hideBits(green.substring(0, 6), messageBinary.substring(3, 5));
+        int b = hideBits(blue.substring(0, 5), messageBinary.substring(5, 8));
 
-        return new Pixel(carrier.getX(), carrier.getY(), rVal, gVal, bVal);
+        return new Pixel(carrier.getX(), carrier.getY(), r, g, b);
+    }
+
+    // Uses chopped bits to hide values.
+    private int hideBits(String carrierValue, String messageBinarySection)
+    {
+        builder.delete(0, 8);
+        builder.append(carrierValue + messageBinarySection);
+        int value = Integer.parseInt(Utilities.binaryToString(builder.toString()));
+        return value;
     }
 
     private void createPixelArrays()
@@ -99,13 +105,5 @@ public class EncryptionTool
                 messageValues[count++] = messagePixels[x][y].getColor().getBlue();
             }
         }
-    }
-
-    private void clearBuilderValues()
-    {
-        int length = 8;
-        redValueBuilder.delete(0, length);
-        greenValueBuilder.delete(0, length);
-        blueValueBuilder.delete(0, length);
     }
 }
