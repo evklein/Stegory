@@ -11,7 +11,7 @@ public class Utilities
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Integer.toBinaryString(value));
 
-        // Add 
+        // Add
         while (stringBuilder.length() != 8)
         {
             String old = stringBuilder.toString();
