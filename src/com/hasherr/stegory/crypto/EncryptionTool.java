@@ -16,7 +16,6 @@ public class EncryptionTool
     private BufferedImage carrier, message;
     private Pixel[][] carrierPixels, messagePixels;
     private int[] messageValues;
-    private StringBuilder builder;
 //    private StringBuilder redValueBuilder, blueValueBuilder, greenValueBuilder;
 
     public EncryptionTool(BufferedImage carrier, BufferedImage message) throws IOException
@@ -27,7 +26,6 @@ public class EncryptionTool
         messagePixels = new Pixel[message.getWidth()][message.getHeight()];
         messageValues = new int[message.getWidth() * message.getHeight() * 9];
 
-        builder = new StringBuilder();
 //        redValueBuilder = new StringBuilder();
 //        blueValueBuilder = new StringBuilder();
 //        greenValueBuilder = new StringBuilder();
@@ -35,7 +33,7 @@ public class EncryptionTool
         createPixelArrays();
     }
 
-    public void encodeMessage(String imagePath) throws IOException
+    public void encryptMessage(String imagePath) throws IOException
     {
         int width = carrier.getWidth();
         int height = carrier.getHeight();
@@ -46,7 +44,7 @@ public class EncryptionTool
         {
             for (int y = 0; y < height; y++)
             {
-                carrierPixels[x][y] = encodePixel(carrierPixels[x][y], messageValues[count++]);
+                carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], messageValues[count++]);
                 int color = (alpha << 24) | (carrierPixels[x][y].getColor().getRed() << 16) | (carrierPixels[x][y].getColor().getGreen() << 8)
                         | carrierPixels[x][y].getColor().getBlue();
                 carrier.setRGB(x, y, color);
@@ -56,7 +54,7 @@ public class EncryptionTool
         ImageIO.write(carrier, "PNG", new File(imagePath));
     }
 
-    private Pixel encodePixel(Pixel carrier, int message)
+    private Pixel encryptPixel(Pixel carrier, int message)
     {
         String messageBinary = Utilities.stringToBinary(message);
 
@@ -80,9 +78,7 @@ public class EncryptionTool
     // Uses chopped bits to hide values.
     private int hideBits(String carrierValue, String messageBinarySection)
     {
-        builder.delete(0, 8);
-        builder.append(carrierValue + messageBinarySection);
-        int value = Integer.parseInt(Utilities.binaryToString(builder.toString()));
+        int value = Integer.parseInt(Utilities.binaryToString(carrierValue + messageBinarySection));
         return value;
     }
 
