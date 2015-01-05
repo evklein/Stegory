@@ -1,4 +1,4 @@
-package com.hasherr.stegory.core;
+package com.hasherr.stegory.util;
 
 /**
  * Created by Evan on 1/4/2015.

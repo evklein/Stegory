@@ -1,6 +1,6 @@
 package com.hasherr.stegory.crypto;
 
-import com.hasherr.stegory.core.Utilities;
+import com.hasherr.stegory.util.Utilities;
 import com.hasherr.stegory.image.Pixel;
 
 import javax.imageio.ImageIO;
