@@ -1,11 +1,9 @@
 package com.hasherr.stegory.crypto;
 
-import com.hasherr.stegory.util.Utilities;
 import com.hasherr.stegory.image.Pixel;
+import com.hasherr.stegory.util.Utilities;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -34,7 +32,7 @@ public class DecryptionTool
         decodeCount = 0;
     }
 
-    public void decodeMessage(String filePath) throws IOException
+    public BufferedImage decodeMessage() throws IOException
     {
         int alpha = 255;
         for (int x = 0; x < message.getWidth(); x++)
@@ -50,7 +48,7 @@ public class DecryptionTool
             }
         }
 
-        ImageIO.write(message, "PNG", new File(filePath));
+        return message;
     }
 
     private String getHiddenValue()

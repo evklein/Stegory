@@ -1,5 +1,6 @@
 package com.hasherr.stegory.ui;
 
+import com.hasherr.stegory.crypto.DecryptionTool;
 import com.hasherr.stegory.crypto.EncryptionTool;
 
 import javax.imageio.ImageIO;
@@ -24,11 +25,18 @@ public class MainForm
     private JButton encryptButton;
     private JLabel carrierImagePathLabel;
     private JLabel messageImagePathLabel;
+    private JButton selectCarrierImage;
+    private JTextField widthField;
+    private JTextField heightField;
+    private JButton decryptButton;
 
     private BufferedImage carrier, message;
 
     public MainForm() throws IOException
     {
+        ////////////////
+        ///ENCRYPTION///
+        ////////////////
         selectCarrierImageButton.addActionListener(new ActionListener()
         {
             @Override
@@ -98,6 +106,58 @@ public class MainForm
                     {
                         e.printStackTrace();
                     }
+                    System.out.println("All done!");
+                }
+            }
+        });
+
+        ////////////////
+        ///DECRYPTION///
+        ////////////////
+        selectCarrierImage.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+                JFileChooser fileChooser = new JFileChooser();
+                int response = fileChooser.showOpenDialog(selectCarrierImage);
+
+                if (response == JFileChooser.APPROVE_OPTION)
+                {
+                    try
+                    {
+                        carrier = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        decryptButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+                JFileChooser fileChooser = new JFileChooser();
+                int response = fileChooser.showSaveDialog(decryptButton);
+
+                if (response == JFileChooser.APPROVE_OPTION)
+                {
+                    int width = Integer.parseInt(widthField.getText());
+                    int height = Integer.parseInt(heightField.getText());
+
+                    try
+                    {
+                        message = new DecryptionTool(carrier, width, height).decodeMessage();
+                        ImageIO.write(message, "png", new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
