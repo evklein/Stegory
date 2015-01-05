@@ -1,11 +1,9 @@
 package com.hasherr.stegory.crypto;
 
-import com.hasherr.stegory.util.Utilities;
 import com.hasherr.stegory.image.Pixel;
+import com.hasherr.stegory.util.Utilities;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -33,7 +31,7 @@ public class EncryptionTool
         createPixelArrays();
     }
 
-    public void encryptMessage(String imagePath) throws IOException
+    public BufferedImage encryptMessage() throws IOException
     {
         int width = carrier.getWidth();
         int height = carrier.getHeight();
@@ -51,7 +49,7 @@ public class EncryptionTool
             }
         }
 
-        ImageIO.write(carrier, "PNG", new File(imagePath));
+        return carrier;
     }
 
     private Pixel encryptPixel(Pixel carrier, int message)
