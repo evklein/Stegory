@@ -5,6 +5,8 @@ package com.hasherr.stegory.util;
  */
 public class Utilities
 {
+    public static final int ALPHA = 255;
+    
     // Converts a string to a binary string.
     public static String stringToBinary(int value)
     {

@@ -14,7 +14,6 @@ public class EncryptionTool
     private BufferedImage carrier, message;
     private Pixel[][] carrierPixels, messagePixels;
     private int[] messageValues;
-//    private StringBuilder redValueBuilder, blueValueBuilder, greenValueBuilder;
 
     public EncryptionTool(BufferedImage carrier, BufferedImage message) throws IOException
     {
@@ -24,10 +23,6 @@ public class EncryptionTool
         messagePixels = new Pixel[message.getWidth()][message.getHeight()];
         messageValues = new int[message.getWidth() * message.getHeight() * 9];
 
-//        redValueBuilder = new StringBuilder();
-//        blueValueBuilder = new StringBuilder();
-//        greenValueBuilder = new StringBuilder();
-
         createPixelArrays();
     }
 
@@ -35,7 +30,6 @@ public class EncryptionTool
     {
         int width = carrier.getWidth();
         int height = carrier.getHeight();
-        int alpha = 255;
         int count = 0;
 
         for (int x = 0; x < width; x++)
@@ -43,8 +37,9 @@ public class EncryptionTool
             for (int y = 0; y < height; y++)
             {
                 carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], messageValues[count++]);
-                int color = (alpha << 24) | (carrierPixels[x][y].getColor().getRed() << 16) | (carrierPixels[x][y].getColor().getGreen() << 8)
-                        | carrierPixels[x][y].getColor().getBlue();
+                int color = (Utilities.ALPHA << 24) | (carrierPixels[x][y].getColor().getRed() << 16) |
+                            (carrierPixels[x][y].getColor().getGreen() << 8) |
+                            carrierPixels[x][y].getColor().getBlue();
                 carrier.setRGB(x, y, color);
             }
         }

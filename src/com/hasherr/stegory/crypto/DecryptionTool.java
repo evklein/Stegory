@@ -24,7 +24,7 @@ public class DecryptionTool
         message = new BufferedImage(messageWidth, messageHeight, BufferedImage.TYPE_INT_RGB);
 
         carrierPixels = new Pixel[carrier.getWidth()][carrier.getHeight()];
-        carrierValues = new int[carrier.getWidth() * carrier.getHeight() * 9];
+        carrierValues = new int[carrier.getWidth() * carrier.getHeight() * 9]; // Carries all RGB values of the carrier.
         assignCarrierPixels();
 
         // Decoding tool-related variables.
@@ -34,16 +34,15 @@ public class DecryptionTool
 
     public BufferedImage decodeMessage() throws IOException
     {
-        int alpha = 255;
         for (int x = 0; x < message.getWidth(); x++)
         {
             for (int y = 0; y < message.getHeight(); y++)
             {
-                int hiddenRedValue = Integer.parseInt(Utilities.binaryToString(getHiddenValue()));
-                int hiddenGreenValue = Integer.parseInt(Utilities.binaryToString(getHiddenValue()));
-                int hiddenBlueValue = Integer.parseInt(Utilities.binaryToString(getHiddenValue()));
+                int hiddenRedValue = Integer.parseInt(Utilities.binaryToString(getHiddenBinaryValue()));
+                int hiddenGreenValue = Integer.parseInt(Utilities.binaryToString(getHiddenBinaryValue()));
+                int hiddenBlueValue = Integer.parseInt(Utilities.binaryToString(getHiddenBinaryValue()));
 
-                int color = (alpha << 24) | (hiddenRedValue << 16) | (hiddenGreenValue << 8) | hiddenBlueValue;
+                int color = (Utilities.ALPHA << 24) | (hiddenRedValue << 16) | (hiddenGreenValue << 8) | hiddenBlueValue;
                 message.setRGB(x, y, color);
             }
         }
@@ -51,7 +50,7 @@ public class DecryptionTool
         return message;
     }
 
-    private String getHiddenValue()
+    private String getHiddenBinaryValue()
     {
         builder.delete(0, 8);
         String r = Utilities.stringToBinary(carrierValues[decodeCount++]);

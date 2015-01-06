@@ -34,6 +34,9 @@ public class MainForm
     private JLabel messageImageWidthLabel;
     private JLabel messageImageHeightLabel;
     private JLabel encryptionStatusLabel;
+    private JLabel decryptionCarrierImagePath;
+    private JLabel decryptionCarrierImageWidth;
+    private JLabel decryptionCarrierImageHeight;
 
     private BufferedImage carrier, message;
     private JFileChooser fileChooser;
@@ -138,9 +141,13 @@ public class MainForm
 
                 if (response == JFileChooser.APPROVE_OPTION)
                 {
+                    decryptionCarrierImagePath.setText("Image path: " + fileChooser.getSelectedFile());
                     try
                     {
                         carrier = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                        decryptionCarrierImageWidth.setText("Image width: " + carrier.getWidth());
+                        decryptionCarrierImageHeight.setText("Image height: " + carrier.getHeight());
+                        
                     } catch (IOException e)
                     {
                         e.printStackTrace();
