@@ -103,14 +103,14 @@ public class MainForm
             public void actionPerformed(ActionEvent event)
             {
                 int response = fileChooser.showSaveDialog(encryptButton);
+                encryptionStatusLabel.setText("Encryption Status: [PENDING]");
                 if (response == JFileChooser.APPROVE_OPTION)
                 {
-                    encryptionStatusLabel.setText("Encryption Status: [PENDING]");
+                    String filePath = fileChooser.getSelectedFile().toString();
                     try
                     {
                         BufferedImage encryptedImage = new EncryptionTool(carrier, message).encryptMessage();
-
-                        if (fileChooser.getSelectedFile().toString().substring(fileChooser.getSelectedFile().toString().length() - 4, fileChooser.getSelectedFile().toString().length()).toLowerCase().equals(".png"))
+                        if (filePath.substring(filePath.length() - 4, filePath.length()).toLowerCase().equals(".png"))
                             ImageIO.write(encryptedImage, "png", fileChooser.getSelectedFile());
                         else
                             ImageIO.write(encryptedImage, "png", new File(fileChooser.getSelectedFile() + ".png"));
@@ -118,7 +118,7 @@ public class MainForm
                     catch (IOException e)
                     {
                         e.printStackTrace();
-                        encryptionStatusLabel.setText("Encryption Status: [FAILED - ERROR]");
+                        encryptionStatusLabel.setText("Encryption Status: [FAILED]");
                     }
 
                     encryptionStatusLabel.setText("Encryption Status: [COMPLETED]");
