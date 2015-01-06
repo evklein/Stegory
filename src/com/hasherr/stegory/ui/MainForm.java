@@ -29,11 +29,19 @@ public class MainForm
     private JTextField widthField;
     private JTextField heightField;
     private JButton decryptButton;
+    private JLabel carrierImageWidthLabel;
+    private JLabel carrierImageHeightLabel;
+    private JLabel messageImageWidthLabel;
+    private JLabel messageImageHeightLabel;
+    private JLabel encryptionStatusLabel;
 
     private BufferedImage carrier, message;
+    private JFileChooser fileChooser;
 
     public MainForm() throws IOException
     {
+        fileChooser = new JFileChooser();
+
         ////////////////
         ///ENCRYPTION///
         ////////////////
@@ -42,17 +50,18 @@ public class MainForm
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                JFileChooser fileChooser = new JFileChooser();
-                int returnVal = fileChooser.showOpenDialog(selectCarrierImageButton);
+                int response = fileChooser.showOpenDialog(selectCarrierImageButton);
 
-                if (returnVal == JFileChooser.APPROVE_OPTION)
+                if (response == JFileChooser.APPROVE_OPTION)
                 {
                     File carrierFile = fileChooser.getSelectedFile();
-                    carrierImagePathLabel.setText(carrierFile.getAbsolutePath());
+                    carrierImagePathLabel.setText("Image path: " + carrierFile.getAbsolutePath());
 
                     try
                     {
                         carrier = ImageIO.read(carrierFile);
+                        carrierImageWidthLabel.setText("Width: " + Integer.toString(carrier.getWidth()));
+                        carrierImageHeightLabel.setText("Height: " + Integer.toString(carrier.getHeight()));
                     }
                     catch (IOException e)
                     {
@@ -67,17 +76,18 @@ public class MainForm
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                JFileChooser fileChooser = new JFileChooser();
-                int returnVal = fileChooser.showOpenDialog(selectMessageImageButton);
+                int response = fileChooser.showOpenDialog(selectMessageImageButton);
 
-                if (returnVal == JFileChooser.APPROVE_OPTION)
+                if (response == JFileChooser.APPROVE_OPTION)
                 {
                     File messageFile = fileChooser.getSelectedFile();
-                    messageImagePathLabel.setText(messageFile.getAbsolutePath());
+                    messageImagePathLabel.setText("Image path: " + messageFile.getAbsolutePath());
 
                     try
                     {
                         message = ImageIO.read(messageFile);
+                        messageImageWidthLabel.setText("Width: " + message.getWidth());
+                        messageImageHeightLabel.setText("Height: " + message.getHeight());
                     }
                     catch (IOException e)
                     {
@@ -92,21 +102,26 @@ public class MainForm
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                JFileChooser fileChooser = new JFileChooser();
                 int response = fileChooser.showSaveDialog(encryptButton);
-
                 if (response == JFileChooser.APPROVE_OPTION)
                 {
+                    encryptionStatusLabel.setText("Encryption Status: [PENDING]");
                     try
                     {
                         BufferedImage encryptedImage = new EncryptionTool(carrier, message).encryptMessage();
-                        ImageIO.write(encryptedImage, "png", fileChooser.getSelectedFile());
+
+                        if (fileChooser.getSelectedFile().toString().substring(fileChooser.getSelectedFile().toString().length() - 4, fileChooser.getSelectedFile().toString().length()).toLowerCase().equals(".png"))
+                            ImageIO.write(encryptedImage, "png", fileChooser.getSelectedFile());
+                        else
+                            ImageIO.write(encryptedImage, "png", new File(fileChooser.getSelectedFile() + ".png"));
                     }
                     catch (IOException e)
                     {
                         e.printStackTrace();
+                        encryptionStatusLabel.setText("Encryption Status: [FAILED - ERROR]");
                     }
-                    System.out.println("All done!");
+
+                    encryptionStatusLabel.setText("Encryption Status: [COMPLETED]");
                 }
             }
         });
@@ -119,7 +134,6 @@ public class MainForm
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                JFileChooser fileChooser = new JFileChooser();
                 int response = fileChooser.showOpenDialog(selectCarrierImage);
 
                 if (response == JFileChooser.APPROVE_OPTION)
@@ -140,7 +154,6 @@ public class MainForm
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                JFileChooser fileChooser = new JFileChooser();
                 int response = fileChooser.showSaveDialog(decryptButton);
 
                 if (response == JFileChooser.APPROVE_OPTION)
@@ -157,7 +170,6 @@ public class MainForm
                     {
                         e.printStackTrace();
                     }
-
                 }
             }
         });
@@ -166,11 +178,11 @@ public class MainForm
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException
     {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        JFrame frame = new JFrame("MainForm");
+        JFrame frame = new JFrame("Stegory v0.2");
         frame.setContentPane(new MainForm().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(300, 250);
+        frame.setSize(400, 290);
         frame.setResizable(true);
         frame.setVisible(true);
     }
