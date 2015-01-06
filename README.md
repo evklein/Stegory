@@ -9,3 +9,9 @@
 
 * Stegory is headed by me, Evan Klein.
 * You can reach me by shooting an email to eklein217@gmail.com
+
+### Future Plans ###
+
+* Add support for multiple image types (JPEG, BMP)
+* Splash Screen with official logo and information
+* Removal of width/height fields in the decryption section
