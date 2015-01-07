@@ -53,9 +53,9 @@ public class DecryptionTool
     private String getHiddenBinaryValue()
     {
         builder.delete(0, 8);
-        String r = Utilities.stringToBinary(carrierValues[decodeCount++]);
-        String g = Utilities.stringToBinary(carrierValues[decodeCount++]);
-        String b = Utilities.stringToBinary(carrierValues[decodeCount++]);
+        String r = Utilities.intToBinary(carrierValues[decodeCount++], 8);
+        String g = Utilities.intToBinary(carrierValues[decodeCount++], 8);
+        String b = Utilities.intToBinary(carrierValues[decodeCount++], 8);
 
         String hiddenBinaryValue = builder.append(r.substring(5, 8) + g.substring(6, 8) + b.substring(5, 8)).toString();
         return hiddenBinaryValue;

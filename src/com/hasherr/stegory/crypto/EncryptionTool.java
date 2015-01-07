@@ -31,15 +31,20 @@ public class EncryptionTool
         int width = carrier.getWidth();
         int height = carrier.getHeight();
         int count = 0;
+        String[] messageDimensions = getMessageDimensions();
 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], messageValues[count++]);
+                if (x == 0 && y <= 3)
+                    carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], Integer.parseInt(Utilities.binaryToString(messageDimensions[y])));
+                else
+                    carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], messageValues[count++]);
+
                 int color = (Utilities.ALPHA << 24) | (carrierPixels[x][y].getColor().getRed() << 16) |
                             (carrierPixels[x][y].getColor().getGreen() << 8) |
-                            carrierPixels[x][y].getColor().getBlue();
+                             carrierPixels[x][y].getColor().getBlue();
                 carrier.setRGB(x, y, color);
             }
         }
@@ -49,12 +54,12 @@ public class EncryptionTool
 
     private Pixel encryptPixel(Pixel carrier, int message)
     {
-        String messageBinary = Utilities.stringToBinary(message);
+        String messageBinary = Utilities.intToBinary(message, 8);
 
 //        clearBuilderValues();
-        String red = Utilities.stringToBinary(carrier.getColor().getRed());
-        String green = Utilities.stringToBinary(carrier.getColor().getGreen());
-        String blue = Utilities.stringToBinary(carrier.getColor().getBlue());
+        String red = Utilities.intToBinary(carrier.getColor().getRed(), 8);
+        String green = Utilities.intToBinary(carrier.getColor().getGreen(), 8);
+        String blue = Utilities.intToBinary(carrier.getColor().getBlue(), 8);
 
         // Hide values HERE.
 //        redValueBuilder.append(red.substring(0, 5) + messageBinary.substring(0, 3));
@@ -73,6 +78,20 @@ public class EncryptionTool
     {
         int value = Integer.parseInt(Utilities.binaryToString(carrierValue + messageBinarySection));
         return value;
+    }
+
+    // Encrypts message width and height into the first four pixels of the carrier in order to allow for easier, more automatic encryption.
+    private String[] getMessageDimensions()
+    {
+        String width = Utilities.intToBinary(message.getWidth(), 16);
+        String height = Utilities.intToBinary(message.getHeight(), 16);
+
+        String widthOne = width.substring(0, 8);
+        String widthTwo = width.substring(8, 16);
+        String heightOne = height.substring(0, 8);
+        String heightTwo = height.substring(8, 16);
+        String[] splitValues = { widthOne, widthTwo, heightOne, heightTwo };
+        return splitValues;
     }
 
     private void createPixelArrays()
