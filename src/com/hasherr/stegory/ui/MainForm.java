@@ -165,12 +165,9 @@ public class MainForm
 
                 if (response == JFileChooser.APPROVE_OPTION)
                 {
-                    int width = Integer.parseInt(widthField.getText());
-                    int height = Integer.parseInt(heightField.getText());
-
                     try
                     {
-                        message = new DecryptionTool(carrier, width, height).decryptMessage();
+                        message = new DecryptionTool(carrier).decryptMessage();
                         ImageIO.write(message, "png", new File(fileChooser.getSelectedFile().getAbsolutePath()));
                     }
                     catch (IOException e)

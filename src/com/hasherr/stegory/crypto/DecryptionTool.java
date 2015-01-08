@@ -18,18 +18,21 @@ public class DecryptionTool
 
     StringBuilder builder;
 
-    public DecryptionTool(BufferedImage carrier, int messageWidth, int messageHeight)
+    public DecryptionTool(BufferedImage carrier)
     {
         this.carrier = carrier;
         builder = new StringBuilder();
-
 
         carrierPixels = new Pixel[carrier.getWidth()][carrier.getHeight()];
         carrierValues = new int[carrier.getWidth() * carrier.getHeight() * 9]; // Carries all RGB values of the carrier.
         assignCarrierPixels();
 
         // Decoding tool-related variables.
+
+        System.out.println(getHiddenDimensions(1));
+        System.out.println(getHiddenDimensions(2));
         message = new BufferedImage(getHiddenDimensions(1), getHiddenDimensions(2), BufferedImage.TYPE_INT_RGB);
+        System.out.println(message.getWidth());
         decodeCount = 0;
     }
 
@@ -54,9 +57,9 @@ public class DecryptionTool
     private String getHiddenBinaryValue()
     {
         builder.delete(0, 8);
-        String r = Utilities.intToBinary(carrierValues[decodeCount++], 8);
-        String g = Utilities.intToBinary(carrierValues[decodeCount++], 8);
-        String b = Utilities.intToBinary(carrierValues[decodeCount++], 8);
+        String r = Utilities.integerToBinary(carrierValues[decodeCount++], 8);
+        String g = Utilities.integerToBinary(carrierValues[decodeCount++], 8);
+        String b = Utilities.integerToBinary(carrierValues[decodeCount++], 8);
 
         String hiddenBinaryValue = builder.append(r.substring(5, 8) + g.substring(6, 8) + b.substring(5, 8)).toString(); // This is where the magic happens.
         return hiddenBinaryValue;
@@ -71,16 +74,17 @@ public class DecryptionTool
         for (int i = 0; i < 4; i++)
         {
             builder.delete(0, 8);
-            String r = Utilities.intToBinary(carrierValues[specialCount++], 8);
-            String g = Utilities.intToBinary(carrierValues[specialCount++], 8);
-            String b = Utilities.intToBinary(carrierValues[specialCount++], 8);
+            String r = Utilities.integerToBinary(carrierValues[specialCount++], 8);
+            String g = Utilities.integerToBinary(carrierValues[specialCount++], 8);
+            String b = Utilities.integerToBinary(carrierValues[specialCount++], 8);
 
             String hiddenBinaryValue = builder.append(r.substring(5, 8) + g.substring(6, 8) + b.substring(5, 8)).toString();
             splitBinaryValues[i] = hiddenBinaryValue;
         }
+        binaryValues[0] = splitBinaryValues[0] + splitBinaryValues[1]; // WIDTH
+        binaryValues[1] = splitBinaryValues[2] + splitBinaryValues[3]; // HEIGHT
 
-        binaryValues[0] = splitBinaryValues[0] + splitBinaryValues[1];
-        binaryValues[1] = splitBinaryValues[2] + splitBinaryValues[3];
+        
         if (option == 1)
             return Integer.parseInt(Utilities.binaryToString(binaryValues[0]));
         return Integer.parseInt(Utilities.binaryToString(binaryValues[1]));

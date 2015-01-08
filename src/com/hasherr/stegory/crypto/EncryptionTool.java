@@ -37,10 +37,9 @@ public class EncryptionTool
         {
             for (int y = 0; y < height; y++)
             {
+                carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], messageValues[count++]);
                 if (x == 0 && y <= 3)
                     carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], Integer.parseInt(Utilities.binaryToString(messageDimensions[y])));
-                else
-                    carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], messageValues[count++]);
 
                 int color = (Utilities.ALPHA << 24) | (carrierPixels[x][y].getColor().getRed() << 16) |
                             (carrierPixels[x][y].getColor().getGreen() << 8) |
@@ -54,17 +53,11 @@ public class EncryptionTool
 
     private Pixel encryptPixel(Pixel carrier, int message)
     {
-        String messageBinary = Utilities.intToBinary(message, 8);
+        String messageBinary = Utilities.integerToBinary(message, 8);
 
-//        clearBuilderValues();
-        String red = Utilities.intToBinary(carrier.getColor().getRed(), 8);
-        String green = Utilities.intToBinary(carrier.getColor().getGreen(), 8);
-        String blue = Utilities.intToBinary(carrier.getColor().getBlue(), 8);
-
-        // Hide values HERE.
-//        redValueBuilder.append(red.substring(0, 5) + messageBinary.substring(0, 3));
-//        greenValueBuilder.append(green.substring(0, 6) + messageBinary.substring(3, 5));
-//        blueValueBuilder.append(blue.substring(0, 5) + messageBinary.substring(5, 8));
+        String red = Utilities.integerToBinary(carrier.getColor().getRed(), 8);
+        String green = Utilities.integerToBinary(carrier.getColor().getGreen(), 8);
+        String blue = Utilities.integerToBinary(carrier.getColor().getBlue(), 8);
 
         int r = hideBits(red.substring(0, 5), messageBinary.substring(0, 3));
         int g = hideBits(green.substring(0, 6), messageBinary.substring(3, 5));
@@ -83,8 +76,8 @@ public class EncryptionTool
     // Encrypts message width and height into the first four pixels of the carrier in order to allow for easier, more automatic encryption.
     private String[] getMessageDimensions()
     {
-        String width = Utilities.intToBinary(message.getWidth(), 16);
-        String height = Utilities.intToBinary(message.getHeight(), 16);
+        String width = Utilities.integerToBinary(message.getWidth(), 16);
+        String height = Utilities.integerToBinary(message.getHeight(), 16);
 
         String widthOne = width.substring(0, 8);
         String widthTwo = width.substring(8, 16);

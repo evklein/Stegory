@@ -8,7 +8,7 @@ public class Utilities
     public static final int ALPHA = 255;
     
     // Converts a string to a binary string.
-    public static String intToBinary(int value, int binaryLength)
+    public static String integerToBinary(int value, int binaryLength)
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Integer.toBinaryString(value));
