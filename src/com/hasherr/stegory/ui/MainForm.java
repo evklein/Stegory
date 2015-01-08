@@ -170,7 +170,7 @@ public class MainForm
 
                     try
                     {
-                        message = new DecryptionTool(carrier, width, height).decodeMessage();
+                        message = new DecryptionTool(carrier, width, height).decryptMessage();
                         ImageIO.write(message, "png", new File(fileChooser.getSelectedFile().getAbsolutePath()));
                     }
                     catch (IOException e)
