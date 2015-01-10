@@ -4,7 +4,6 @@ import com.hasherr.stegory.image.Pixel;
 import com.hasherr.stegory.util.Utilities;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Created by Evan on 1/4/2015.
@@ -15,7 +14,12 @@ public class DecryptionTool
     private BufferedImage carrier, message;
     private Pixel[][] carrierPixels;
     private int[] carrierValues;
+    private int decodeCount;
 
+    /**
+     * Instantiates all global variables for the class, using data derived from the carrier image.
+     * @param carrier encrypted carrier image.
+     */
     public DecryptionTool(BufferedImage carrier)
     {
         this.carrier = carrier;
@@ -25,15 +29,18 @@ public class DecryptionTool
         carrierValues = new int[carrier.getWidth() * carrier.getHeight() * 9]; // Carries all RGB values of the carrier.
         assignCarrierPixelValues();
 
-        System.out.println("W: " + getEncryptedWidth());
-        System.out.println("H: " + getEncryptedHeight());
         message = new BufferedImage(getEncryptedWidth(), getEncryptedHeight(), BufferedImage.TYPE_INT_RGB);
+        decodeCount = 0;
     }
 
-    Integer decodeCount = 0;
-    public BufferedImage decryptMessage() throws IOException
+    /**
+     * Decrypts the payload image from the carrier values. This is done by finding the RGB values for every 3 carrier
+     * values in carrierValues. The binary values are then converted to integers and then formatted into an RGB color
+     * code. The resulting pixel is then added to the new message.
+     * @return payload image.
+     */
+    public BufferedImage decryptMessage()
     {
-
         for (int x = 0; x < message.getWidth(); x++)
         {
             for (int y = 0; y < message.getHeight(); y++)
@@ -50,93 +57,74 @@ public class DecryptionTool
         return message;
     }
 
-    int dCount = 0;
+    /**
+     * Pulls the hidden binary values out of every 3 RGB values in carrierValues. Starts at 0 using the global decodeCount
+     * variable.
+     * @return the decrypted hidden binary value.
+     */
     private String getHiddenBinaryValue()
     {
         builder.delete(0, 8);
-        String r = Utilities.integerToBinaryString(carrierValues[dCount++], 8);
-        String g = Utilities.integerToBinaryString(carrierValues[dCount++], 8);
-        String b = Utilities.integerToBinaryString(carrierValues[dCount++], 8);
+        String r = Utilities.integerToBinaryString(carrierValues[decodeCount++], 8);
+        String g = Utilities.integerToBinaryString(carrierValues[decodeCount++], 8);
+        String b = Utilities.integerToBinaryString(carrierValues[decodeCount++], 8);
 
-        String hiddenBinaryValue = builder.append(r.substring(5, 8) + g.substring(6, 8) + b.substring(5, 8)).toString(); // This is where the magic happens.
+        // Decryption magic.
+        String hiddenBinaryValue = builder.append(r.substring(5, 8) + g.substring(6, 8) + b.substring(5, 8)).toString();
         return hiddenBinaryValue;
     }
 
+    /**
+     * Pulls the hidden binary values out of every 3 RGB values in carrierValues. Starts at whatever variable is passed
+     * to count.
+     * @param count the starting value of decryption within carrierValues.
+     * @return
+     */
     private String getHiddenBinaryValue(int count)
     {
         builder.delete(0, 8);
-        System.out.println(count);
         String r = Utilities.integerToBinaryString(carrierValues[count++], 8);
         String g = Utilities.integerToBinaryString(carrierValues[count++], 8);
         String b = Utilities.integerToBinaryString(carrierValues[count++], 8);
-        System.out.println(count);
 
         String hiddenBinaryValue = builder.append(r.substring(5, 8) + g.substring(6, 8) + b.substring(5, 8)).toString(); // This is where the magic happens.
         return hiddenBinaryValue;
     }
 
-//    private int getHiddenDimensions(int option)
-//    {
-////        int specialCount = 0;
-////        String[] binaryValues = new String[2];
-////        String[] splitBinaryValues = new String[4];
-////
-////        for (int i = 0; i < 4; i++)
-////        {
-////            builder.delete(0, 8);
-////            String r = Utilities.integerToBinaryString(carrierValues[specialCount++], 8);
-////            String g = Utilities.integerToBinaryString(carrierValues[specialCount++], 8);
-////            String b = Utilities.integerToBinaryString(carrierValues[specialCount++], 8);
-////
-////            String hiddenBinaryValue = builder.append(r.substring(5, 8) + g.substring(6, 8) + b.substring(5, 8)).toString();
-////            splitBinaryValues[i] = hiddenBinaryValue;
-////        }
-////        binaryValues[0] = splitBinaryValues[0] + splitBinaryValues[1]; // WIDTH
-////        binaryValues[1] = splitBinaryValues[2] + splitBinaryValues[3]; // HEIGHT
-////
-////
-////        if (option == 1)
-////            return Utilities.binaryToInteger(binaryValues[0]);
-////        return Utilities.binaryToInteger(binaryValues[1]);
-//
-//
-//
-//        int count = 0;
-//        String[] binaryValues = new String[4];
-//
-//        for (int i = 0; i < 4; i++)
-//            binaryValues[i] = getHiddenBinaryValue(count);
-//
-//        int width = Utilities.binaryToInteger(binaryValues[0] + binaryValues[1]);
-//        int height = Utilities.binaryToInteger(binaryValues[2] + binaryValues[2]);
-//
-//
-//        return 0;
-//    }
-
+    /**
+     * Returns the width of the target payload. This value is derived from the first 2 pixels (first 6 RGB values)
+     * of the image. By combining the hidden binary values derived from these 2 pixels, a 16-bit binary value is
+     * pulled and can be transformed into a 16-bit integer.
+     * @return the width of the payload.
+     * @see com.hasherr.stegory.util.Utilities#binaryToInteger(String)
+     */
     private int getEncryptedWidth()
     {
-        int count = 0;
         String[] parts = new String[2];
-
         parts[0] = getHiddenBinaryValue(0);
         parts[1] = getHiddenBinaryValue(3);
-
         System.out.println(parts[1] + parts[0]);
         return Utilities.binaryToInteger(parts[0] + parts[1]);
     }
 
+    /**
+     * Returns the height of the target payload. This value is derived from the third and fourth pixels (second 6 RGB
+     * values) of the image. By combining the hidden binary values derived from these 2 pixels, a 16-bit binary value
+     * is pulled and can be transformed into a 16-bit integer.
+     * @return the height of the payload.
+     * @see com.hasherr.stegory.util.Utilities#binaryToInteger(String)
+     */
     private int getEncryptedHeight()
     {
-        int count = 6;
         String[] parts = new String[2];
-
         parts[0] = getHiddenBinaryValue(6);
         parts[1] = getHiddenBinaryValue(9);
-
         return Utilities.binaryToInteger(parts[0] + parts[1]);
     }
 
+    /**
+     * Assigns all RGB values from the carrier image to an array for later use in the decryption process.
+     */
     private void assignCarrierPixelValues()
     {
         int count = 0;
