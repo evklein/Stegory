@@ -127,10 +127,10 @@ public class MainForm
                     try
                     {
                         BufferedImage encryptedImage = new EncryptionTool().encryptMessage(carrier, message);
-                        if (filePath.substring(filePath.length() - 4, filePath.length()).toLowerCase().equals(".png"))
-                            ImageIO.write(encryptedImage, "png", fileChooser.getSelectedFile());
+                        if (filePath.substring(filePath.length() - 4, filePath.length()).toLowerCase().equals(".jpg"))
+                            ImageIO.write(encryptedImage, "JPG", fileChooser.getSelectedFile());
                         else
-                            ImageIO.write(encryptedImage, "png", new File(fileChooser.getSelectedFile() + ".png"));
+                            ImageIO.write(encryptedImage, "JPG", new File(fileChooser.getSelectedFile() + ".jpg"));
                     }
                     catch (IOException e)
                     {
@@ -161,8 +161,8 @@ public class MainForm
                         carrier = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
                         decryptionCarrierImageWidth.setText("Image width: " + carrier.getWidth());
                         decryptionCarrierImageHeight.setText("Image height: " + carrier.getHeight());
-                        decryptionPayloadWidthLabel.setText("Payload width: " + decryptionTool.getEncryptedWidth());
-                        decryptionPayloadHeightLabel.setText("Payload height: " + decryptionTool.getEncryptedHeight());
+//                        decryptionPayloadWidthLabel.setText("Payload width: " + decryptionTool.getEncryptedWidth());
+//                        decryptionPayloadHeightLabel.setText("Payload height: " + decryptionTool.getEncryptedHeight());
                         
                     } catch (IOException e)
                     {
@@ -184,7 +184,7 @@ public class MainForm
                     try
                     {
                         message = decryptionTool.decryptMessage(carrier);
-                        ImageIO.write(message, "png", new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                        ImageIO.write(message, "JPG", new File(fileChooser.getSelectedFile().getAbsolutePath()));
                     }
                     catch (IOException e)
                     {

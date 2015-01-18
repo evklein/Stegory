@@ -147,6 +147,8 @@ public class DecryptionTool
 
     private BufferedImage createMessageImage()
     {
+        System.out.println(getEncryptedWidth());
+        System.out.println(getEncryptedHeight());
         return new BufferedImage(getEncryptedWidth(), getEncryptedHeight(), BufferedImage.TYPE_INT_RGB);
     }
 }
