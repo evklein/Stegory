@@ -37,6 +37,7 @@ public class MainForm
     private JLabel decryptionCarrierImageHeight;
     private JLabel decryptionPayloadWidthLabel;
     private JLabel decryptionPayloadHeightLabel;
+    private JLabel decryptionStatusLabel;
 
     private BufferedImage carrier, message;
     private JFileChooser fileChooser;
@@ -46,6 +47,7 @@ public class MainForm
     public MainForm() throws IOException
     {
         fileChooser = new JFileChooser();
+        encryptionTool = new EncryptionTool();
 
 
         ////////////////
@@ -115,7 +117,7 @@ public class MainForm
                     String filePath = fileChooser.getSelectedFile().toString();
                     try
                     {
-                        BufferedImage encryptedImage = new EncryptionTool(carrier, message).encryptMessage();
+                        BufferedImage encryptedImage = new EncryptionTool().encryptMessage(carrier, message);
                         if (filePath.substring(filePath.length() - 4, filePath.length()).toLowerCase().equals(".png"))
                             ImageIO.write(encryptedImage, "png", fileChooser.getSelectedFile());
                         else
