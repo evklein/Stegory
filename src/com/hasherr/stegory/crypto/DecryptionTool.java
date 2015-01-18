@@ -98,12 +98,11 @@ public class DecryptionTool
      * @return the width of the payload.
      * @see com.hasherr.stegory.util.Utilities#binaryToInteger(String)
      */
-    private int getEncryptedWidth()
+    public int getEncryptedWidth()
     {
         String[] parts = new String[2];
         parts[0] = getHiddenBinaryValue(0);
         parts[1] = getHiddenBinaryValue(3);
-        System.out.println(parts[1] + parts[0]);
         return Utilities.binaryToInteger(parts[0] + parts[1]);
     }
 
@@ -114,7 +113,7 @@ public class DecryptionTool
      * @return the height of the payload.
      * @see com.hasherr.stegory.util.Utilities#binaryToInteger(String)
      */
-    private int getEncryptedHeight()
+    public int getEncryptedHeight()
     {
         String[] parts = new String[2];
         parts[0] = getHiddenBinaryValue(6);
@@ -139,4 +138,5 @@ public class DecryptionTool
             }
         }
     }
+
 }

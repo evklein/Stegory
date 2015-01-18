@@ -10,32 +10,18 @@ import java.awt.image.BufferedImage;
  */
 public class EncryptionTool
 {
-    private BufferedImage carrier, message;
     private Pixel[][] carrierPixels, messagePixels;
     private int[] messageValues;
 
     /**
-     * Constructs a new EncryptionTool using specified carrier and message images.
-     * @param carrier carrier image
-     * @param message message image
-     */
-    public EncryptionTool(BufferedImage carrier, BufferedImage message)
-    {
-        this.carrier = carrier;
-        this.message = message;
-        carrierPixels = new Pixel[carrier.getWidth()][carrier.getHeight()];
-        messagePixels = new Pixel[message.getWidth()][message.getHeight()];
-        messageValues = new int[message.getWidth() * message.getHeight() * 9];
-
-        createPixelArrays();
-    }
-
-    /**
      * Goes through every pixel in the carrier image and encrypts them with RGB values from the message.
+     * @param carrier carrier image to encrypt message with
+     * @param message message image to encrypt within carrier
      * @return new image, encrypted with payload
      */
-    public BufferedImage encryptMessage()
+    public BufferedImage encryptMessage(BufferedImage carrier, BufferedImage message)
     {
+        initiatePixelArrays(carrier, message);
         int count = 0;
 
         for (int x = 0; x < carrier.getWidth(); x++)
@@ -43,7 +29,7 @@ public class EncryptionTool
             for (int y = 0; y < carrier.getHeight(); y++)
             {
                 carrierPixels[x][y] = encryptPixel(carrierPixels[x][y], messageValues[count++]);
-                encryptDimensionalData(x, y);
+                encryptDimensionalData(x, y, message.getWidth(), message.getHeight());
 
                 int color = (Utilities.ALPHA << 24) |
                             (carrierPixels[x][y].getColor().getRed() << 16) |
@@ -64,10 +50,10 @@ public class EncryptionTool
      * @param x the x value to place the new pixel at
      * @param y the y value to place the new pixel at
      */
-    private void encryptDimensionalData(int x, int y)
+    private void encryptDimensionalData(int x, int y, int width, int height)
     {
-        String widthBinary = Utilities.integerToBinaryString(message.getWidth(), 16);
-        String heightBinary = Utilities.integerToBinaryString(message.getHeight(), 16);
+        String widthBinary = Utilities.integerToBinaryString(width, 16);
+        String heightBinary = Utilities.integerToBinaryString(height, 16);
 
         if (x == 0)
         {
@@ -120,8 +106,11 @@ public class EncryptionTool
      * Creates arrays for the carrier image pixel count, the message image count, and all the RGB values within the
      * message pixels.
      */
-    private void createPixelArrays()
+    private void initiatePixelArrays(BufferedImage carrier, BufferedImage message)
     {
+        carrierPixels = new Pixel[carrier.getWidth()][carrier.getHeight()];
+        messagePixels = new Pixel[message.getWidth()][message.getHeight()];
+        messageValues = new int[message.getWidth() * message.getHeight() * 9];
         int count = 0;
 
         // Define all pixels for the carrier image.

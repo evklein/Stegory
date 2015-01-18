@@ -26,8 +26,6 @@ public class MainForm
     private JLabel carrierImagePathLabel;
     private JLabel messageImagePathLabel;
     private JButton selectCarrierImage;
-    private JTextField widthField;
-    private JTextField heightField;
     private JButton decryptButton;
     private JLabel carrierImageWidthLabel;
     private JLabel carrierImageHeightLabel;
@@ -37,13 +35,18 @@ public class MainForm
     private JLabel decryptionCarrierImagePath;
     private JLabel decryptionCarrierImageWidth;
     private JLabel decryptionCarrierImageHeight;
+    private JLabel decryptionPayloadWidthLabel;
+    private JLabel decryptionPayloadHeightLabel;
 
     private BufferedImage carrier, message;
     private JFileChooser fileChooser;
+    private EncryptionTool encryptionTool;
+    private DecryptionTool decryptionTool;
 
     public MainForm() throws IOException
     {
         fileChooser = new JFileChooser();
+
 
         ////////////////
         ///ENCRYPTION///
@@ -147,6 +150,8 @@ public class MainForm
                         carrier = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
                         decryptionCarrierImageWidth.setText("Image width: " + carrier.getWidth());
                         decryptionCarrierImageHeight.setText("Image height: " + carrier.getHeight());
+                        decryptionPayloadWidthLabel.setText("Payload width: " + new DecryptionTool(carrier).getEncryptedWidth());
+                        decryptionPayloadHeightLabel.setText("Payload height: " + new DecryptionTool(carrier).getEncryptedHeight());
                         
                     } catch (IOException e)
                     {
