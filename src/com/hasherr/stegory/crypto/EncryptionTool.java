@@ -108,10 +108,10 @@ public class EncryptionTool
      */
     private void initiatePixelArrays(BufferedImage carrier, BufferedImage message)
     {
+        int count = 0;
         carrierPixels = new Pixel[carrier.getWidth()][carrier.getHeight()];
         messagePixels = new Pixel[message.getWidth()][message.getHeight()];
         messageValues = new int[message.getWidth() * message.getHeight() * 9];
-        int count = 0;
 
         // Define all pixels for the carrier image.
         for (int x = 0; x < carrier.getWidth(); x++)
@@ -130,5 +130,5 @@ public class EncryptionTool
             }
         }
     }
-   
+
 }

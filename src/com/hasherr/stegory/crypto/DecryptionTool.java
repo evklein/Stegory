@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 public class DecryptionTool
 {
     private StringBuilder builder;
-    private BufferedImage carrier, message;
     private Pixel[][] carrierPixels;
     private int[] carrierValues;
     private int decodeCount;
@@ -20,18 +19,7 @@ public class DecryptionTool
      * Instantiates all global variables for the class, using data derived from the carrier image.
      * @param carrier encrypted carrier image.
      */
-    public DecryptionTool(BufferedImage carrier)
-    {
-        this.carrier = carrier;
-        builder = new StringBuilder();
 
-        carrierPixels = new Pixel[carrier.getWidth()][carrier.getHeight()];
-        carrierValues = new int[carrier.getWidth() * carrier.getHeight() * 9]; // Carries all RGB values of the carrier.
-        assignCarrierPixelValues();
-
-        message = new BufferedImage(getEncryptedWidth(), getEncryptedHeight(), BufferedImage.TYPE_INT_RGB);
-        decodeCount = 0;
-    }
 
     /**
      * Decrypts the payload image from the carrier values. This is done by finding the RGB values for every 3 carrier
@@ -39,8 +27,11 @@ public class DecryptionTool
      * code. The resulting pixel is then added to the new message.
      * @return payload image.
      */
-    public BufferedImage decryptMessage()
+    public BufferedImage decryptMessage(BufferedImage carrier)
     {
+        initializeDecryptionTools(carrier);
+        BufferedImage message = createMessageImage();
+
         for (int x = 0; x < message.getWidth(); x++)
         {
             for (int y = 0; y < message.getHeight(); y++)
@@ -122,9 +113,24 @@ public class DecryptionTool
     }
 
     /**
+     * Initialized various variables and arrays needed for the decryption process.
+     * @param carrier the carrier image to derive the encrypted message from.
+     */
+    private void initializeDecryptionTools(BufferedImage carrier)
+    {
+        builder = new StringBuilder();
+
+        carrierPixels = new Pixel[carrier.getWidth()][carrier.getHeight()];
+        carrierValues = new int[carrier.getWidth() * carrier.getHeight() * 9]; // Carries all RGB values of the carrier.
+        assignCarrierPixelValues(carrier);
+
+        decodeCount = 0;
+    }
+
+    /**
      * Assigns all RGB values from the carrier image to an array for later use in the decryption process.
      */
-    private void assignCarrierPixelValues()
+    private void assignCarrierPixelValues(BufferedImage carrier)
     {
         int count = 0;
         for (int x = 0; x < carrier.getWidth(); x++)
@@ -137,6 +143,11 @@ public class DecryptionTool
                 carrierValues[count++] = carrierPixels[x][y].getColor().getBlue();
             }
         }
+    }
+
+    private BufferedImage createMessageImage()
+    {
+        return new BufferedImage(getEncryptedWidth(), getEncryptedHeight(), BufferedImage.TYPE_INT_RGB);
     }
 
 }
