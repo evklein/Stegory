@@ -149,5 +149,4 @@ public class DecryptionTool
     {
         return new BufferedImage(getEncryptedWidth(), getEncryptedHeight(), BufferedImage.TYPE_INT_RGB);
     }
-
 }

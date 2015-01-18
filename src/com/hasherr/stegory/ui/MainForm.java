@@ -38,9 +38,16 @@ public class MainForm
     private JLabel decryptionPayloadWidthLabel;
     private JLabel decryptionPayloadHeightLabel;
     private JLabel decryptionStatusLabel;
+    private JPanel encryptionExportFileFormatPanel;
+    private JRadioButton PNG24RadioButton;
+    private JRadioButton JPEGRadioButton;
+    private JRadioButton BMPRadioButton;
+    private JProgressBar progressBar1;
+    private JProgressBar progressBar2;
 
     private BufferedImage carrier, message;
     private JFileChooser fileChooser;
+    private ButtonGroup encryptionFileFormatButtonGroup;
     private EncryptionTool encryptionTool;
     private DecryptionTool decryptionTool;
 
@@ -48,7 +55,9 @@ public class MainForm
     {
         fileChooser = new JFileChooser();
         encryptionTool = new EncryptionTool();
-
+        decryptionTool = new DecryptionTool();
+        encryptionFileFormatButtonGroup = new ButtonGroup();
+        defineButtonGroupButtons();
 
         ////////////////
         ///ENCRYPTION///
@@ -152,8 +161,8 @@ public class MainForm
                         carrier = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
                         decryptionCarrierImageWidth.setText("Image width: " + carrier.getWidth());
                         decryptionCarrierImageHeight.setText("Image height: " + carrier.getHeight());
-                        decryptionPayloadWidthLabel.setText("Payload width: " + new DecryptionTool(carrier).getEncryptedWidth());
-                        decryptionPayloadHeightLabel.setText("Payload height: " + new DecryptionTool(carrier).getEncryptedHeight());
+                        decryptionPayloadWidthLabel.setText("Payload width: " + decryptionTool.getEncryptedWidth());
+                        decryptionPayloadHeightLabel.setText("Payload height: " + decryptionTool.getEncryptedHeight());
                         
                     } catch (IOException e)
                     {
@@ -174,7 +183,7 @@ public class MainForm
                 {
                     try
                     {
-                        message = new DecryptionTool(carrier).decryptMessage();
+                        message = decryptionTool.decryptMessage(carrier);
                         ImageIO.write(message, "png", new File(fileChooser.getSelectedFile().getAbsolutePath()));
                     }
                     catch (IOException e)
@@ -186,6 +195,13 @@ public class MainForm
         });
     }
 
+    private void defineButtonGroupButtons()
+    {
+        encryptionFileFormatButtonGroup.add(PNG24RadioButton);
+        encryptionFileFormatButtonGroup.add(JPEGRadioButton);
+        encryptionFileFormatButtonGroup.add(BMPRadioButton);
+    }
+
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException
     {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -193,7 +209,7 @@ public class MainForm
         frame.setContentPane(new MainForm().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(400, 290);
+        frame.setSize(450, frame.getHeight());
         frame.setResizable(true);
         frame.setVisible(true);
     }
