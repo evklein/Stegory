@@ -12,6 +12,6 @@
 
 ### Future Plans ###
 
+* ~~removal of width/height fields in the decryption section~~
 * Add support for multiple image types (JPEG, BMP)
 * Splash Screen with official logo and information
-* Removal of width/height fields in the decryption section
