@@ -3,6 +3,7 @@ package com.hasherr.stegory.ui.forms;
 import com.hasherr.stegory.crypto.DecryptionTool;
 import com.hasherr.stegory.crypto.EncryptionTool;
 import com.hasherr.stegory.ui.controllers.SelectCarrierImageButtonController;
+import com.hasherr.stegory.ui.controllers.SelectMessageImageButtonController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -65,35 +66,24 @@ public class MainForm
         ////////////////
         SelectCarrierImageButtonController scibContoller = new SelectCarrierImageButtonController();
         selectCarrierImageButton.addActionListener(scibContoller);
-        carrierImagePathLabel.setText("Image path: " + scibContoller.getFilePath());
-        carrierImageWidthLabel.setText("Width: " + scibContoller.getWidth());
-        carrierImageWidthLabel.setText("Height: " + scibContoller.getHeight());
-
-        selectMessageImageButton.addActionListener(new ActionListener()
+        if (scibContoller.getIsFileSelected())
         {
-            @Override
-            public void actionPerformed(ActionEvent event)
-            {
-                int response = fileChooser.showOpenDialog(selectMessageImageButton);
+            carrierImagePathLabel.setText("Image path: " + scibContoller.getFilePath());
+            carrierImageWidthLabel.setText("Width: " + scibContoller.getWidth());
+            carrierImageWidthLabel.setText("Height: " + scibContoller.getHeight());
+            scibContoller.setIsFileSelected(false);
+        }
 
-                if (response == JFileChooser.APPROVE_OPTION)
-                {
-                    File messageFile = fileChooser.getSelectedFile();
-                    messageImagePathLabel.setText("Image path: " + messageFile.getAbsolutePath());
+        SelectMessageImageButtonController smibController = new SelectMessageImageButtonController();
+        selectMessageImageButton.addActionListener(smibController);
+        if (smibController.getIsFileSelected())
+        {
+            messageImagePathLabel.setText("Image path: " + smibController.getFilePath());
+            messageImageWidthLabel.setText("Width: " + smibController.getWidth());
+            messageImageHeightLabel.setText("Height: " + smibController.getHeight());
+            smibController.setIsFileSelected(false);
+        }
 
-                    try
-                    {
-                        message = ImageIO.read(messageFile);
-                        messageImageWidthLabel.setText("Width: " + message.getWidth());
-                        messageImageHeightLabel.setText("Height: " + message.getHeight());
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
 
         encryptButton.addActionListener(new ActionListener()
         {

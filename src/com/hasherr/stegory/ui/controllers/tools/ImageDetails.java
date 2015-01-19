@@ -8,4 +8,6 @@ public interface ImageDetails
     public String getFilePath();
     public int getWidth();
     public int getHeight();
+    public boolean getIsFileSelected();
+    public void setIsFileSelected(boolean isFileSelected);
 }

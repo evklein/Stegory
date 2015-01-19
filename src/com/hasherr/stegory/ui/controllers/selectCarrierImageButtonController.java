@@ -16,10 +16,12 @@ public class SelectCarrierImageButtonController extends ComponentController impl
 {
     private String filePath;
     private int width, height;
+    private boolean isFileSelected;
 
     @Override
     public void actionPerformed(ActionEvent event)
     {
+        isFileSelected = true;
         int response = fileChooser.showOpenDialog(null);
 
         if (response == JFileChooser.APPROVE_OPTION)
@@ -53,5 +55,17 @@ public class SelectCarrierImageButtonController extends ComponentController impl
     public int getHeight()
     {
         return height;
+    }
+
+    @Override
+    public boolean getIsFileSelected()
+    {
+        return isFileSelected;
+    }
+
+    @Override
+    public void setIsFileSelected(boolean isFileSelected)
+    {
+        this.isFileSelected = isFileSelected;
     }
 }
