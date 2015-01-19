@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by Evan on 1/19/2015.
  */
-public class SelectCarrierImageButtonController extends ComponentController implements ImageDetails
+public class SelectMessageImageButtonController extends ComponentController implements ImageDetails
 {
     private String filePath;
     private int width, height;
@@ -24,14 +24,14 @@ public class SelectCarrierImageButtonController extends ComponentController impl
 
         if (response == JFileChooser.APPROVE_OPTION)
         {
-            File carrierFile = fileChooser.getSelectedFile();
-            filePath = carrierFile.getAbsolutePath();
+            File messageFile = fileChooser.getSelectedFile();
+            filePath = messageFile.getAbsolutePath();
 
             try
             {
-                BufferedImage carrier = ImageIO.read(carrierFile);
-                width = carrier.getWidth();
-                height = carrier.getHeight();
+                BufferedImage message = ImageIO.read(messageFile);
+                width = message.getWidth();
+                height = message.getHeight();
             }
             catch (IOException e)
             {

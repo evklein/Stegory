@@ -1,7 +1,8 @@
-package com.hasherr.stegory.ui;
+package com.hasherr.stegory.ui.forms;
 
 import com.hasherr.stegory.crypto.DecryptionTool;
 import com.hasherr.stegory.crypto.EncryptionTool;
+import com.hasherr.stegory.ui.controllers.SelectCarrierImageButtonController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -62,31 +63,11 @@ public class MainForm
         ////////////////
         ///ENCRYPTION///
         ////////////////
-        selectCarrierImageButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent event)
-            {
-                int response = fileChooser.showOpenDialog(selectCarrierImageButton);
-
-                if (response == JFileChooser.APPROVE_OPTION)
-                {
-                    File carrierFile = fileChooser.getSelectedFile();
-                    carrierImagePathLabel.setText("Image path: " + carrierFile.getAbsolutePath());
-
-                    try
-                    {
-                        carrier = ImageIO.read(carrierFile);
-                        carrierImageWidthLabel.setText("Width: " + Integer.toString(carrier.getWidth()));
-                        carrierImageHeightLabel.setText("Height: " + Integer.toString(carrier.getHeight()));
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        SelectCarrierImageButtonController scibContoller = new SelectCarrierImageButtonController();
+        selectCarrierImageButton.addActionListener(scibContoller);
+        carrierImagePathLabel.setText("Image path: " + scibContoller.getFilePath());
+        carrierImageWidthLabel.setText("Width: " + scibContoller.getWidth());
+        carrierImageWidthLabel.setText("Height: " + scibContoller.getHeight());
 
         selectMessageImageButton.addActionListener(new ActionListener()
         {
