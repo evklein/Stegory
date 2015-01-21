@@ -64,15 +64,8 @@ public class MainForm
         ////////////////
         ///ENCRYPTION///
         ////////////////
-        SelectCarrierImageButtonController scibContoller = new SelectCarrierImageButtonController();
+        SelectCarrierImageButtonController scibContoller = new SelectCarrierImageButtonController(carrierImagePathLabel, carrierImageWidthLabel, carrierImageHeightLabel);
         selectCarrierImageButton.addActionListener(scibContoller);
-        if (scibContoller.getIsFileSelected())
-        {
-            carrierImagePathLabel.setText("Image path: " + scibContoller.getFilePath());
-            carrierImageWidthLabel.setText("Width: " + scibContoller.getWidth());
-            carrierImageWidthLabel.setText("Height: " + scibContoller.getHeight());
-            scibContoller.setIsFileSelected(false);
-        }
 
         SelectMessageImageButtonController smibController = new SelectMessageImageButtonController();
         selectMessageImageButton.addActionListener(smibController);

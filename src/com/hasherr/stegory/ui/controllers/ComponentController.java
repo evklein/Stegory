@@ -21,4 +21,6 @@ public abstract class ComponentController implements ActionListener
         decryptionTool = new DecryptionTool();
         fileChooser = new JFileChooser();
     }
+
+
 }
