@@ -2,8 +2,8 @@ package com.hasherr.stegory.ui.forms;
 
 import com.hasherr.stegory.crypto.DecryptionTool;
 import com.hasherr.stegory.crypto.EncryptionTool;
-import com.hasherr.stegory.ui.controllers.SelectCarrierImageButtonController;
-import com.hasherr.stegory.ui.controllers.SelectMessageImageButtonController;
+import com.hasherr.stegory.ui.controllers.encryption.EncryptionController;
+import com.hasherr.stegory.ui.controllers.encryption.SelectImageUIController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -53,6 +53,8 @@ public class MainForm
     private EncryptionTool encryptionTool;
     private DecryptionTool decryptionTool;
 
+    private SelectImageUIController carrierSelectionController, messageSelectionController;
+
     public MainForm() throws IOException
     {
         fileChooser = new JFileChooser();
@@ -61,51 +63,48 @@ public class MainForm
         encryptionFileFormatButtonGroup = new ButtonGroup();
         defineButtonGroupButtons();
 
+        carrierSelectionController = new SelectImageUIController(carrierImagePathLabel, carrierImageWidthLabel,
+                carrierImageHeightLabel);
+        messageSelectionController = new SelectImageUIController(messageImagePathLabel, messageImageWidthLabel,
+                messageImageHeightLabel);
+
         ////////////////
         ///ENCRYPTION///
         ////////////////
-        SelectCarrierImageButtonController scibContoller = new SelectCarrierImageButtonController(carrierImagePathLabel, carrierImageWidthLabel, carrierImageHeightLabel);
-        selectCarrierImageButton.addActionListener(scibContoller);
+        selectCarrierImageButton.addActionListener(carrierSelectionController);
+        selectMessageImageButton.addActionListener(messageSelectionController);
 
-        SelectMessageImageButtonController smibController = new SelectMessageImageButtonController();
-        selectMessageImageButton.addActionListener(smibController);
-        if (smibController.getIsFileSelected())
-        {
-            messageImagePathLabel.setText("Image path: " + smibController.getFilePath());
-            messageImageWidthLabel.setText("Width: " + smibController.getWidth());
-            messageImageHeightLabel.setText("Height: " + smibController.getHeight());
-            smibController.setIsFileSelected(false);
-        }
+        encryptButton.addActionListener(new EncryptionController(encryptionTool, carrierSelectionController,
+                messageSelectionController));
 
-
-        encryptButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent event)
-            {
-                int response = fileChooser.showSaveDialog(encryptButton);
-                encryptionStatusLabel.setText("Encryption Status: [PENDING]");
-                if (response == JFileChooser.APPROVE_OPTION)
-                {
-                    String filePath = fileChooser.getSelectedFile().toString();
-                    try
-                    {
-                        BufferedImage encryptedImage = new EncryptionTool().encryptMessage(carrier, message);
-                        if (filePath.substring(filePath.length() - 4, filePath.length()).toLowerCase().equals(".jpg"))
-                            ImageIO.write(encryptedImage, "JPG", fileChooser.getSelectedFile());
-                        else
-                            ImageIO.write(encryptedImage, "JPG", new File(fileChooser.getSelectedFile() + ".jpg"));
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                        encryptionStatusLabel.setText("Encryption Status: [FAILED]");
-                    }
-
-                    encryptionStatusLabel.setText("Encryption Status: [COMPLETED]");
-                }
-            }
-        });
+//        encryptButton.addActionListener(new ActionListener()
+//        {
+//            @Override
+//            public void actionPerformed(ActionEvent event)
+//            {
+//                int response = fileChooser.showSaveDialog(encryptButton);
+//                encryptionStatusLabel.setText("Encryption Status: [PENDING]");
+//                if (response == JFileChooser.APPROVE_OPTION)
+//                {
+//                    String filePath = fileChooser.getSelectedFile().toString();
+//                    try
+//                    {
+//                        BufferedImage encryptedImage = new EncryptionTool().encryptMessage(carrier, message);
+//                        if (filePath.substring(filePath.length() - 4, filePath.length()).toLowerCase().equals(".jpg"))
+//                            ImageIO.write(encryptedImage, "JPG", fileChooser.getSelectedFile());
+//                        else
+//                            ImageIO.write(encryptedImage, "JPG", new File(fileChooser.getSelectedFile() + ".jpg"));
+//                    }
+//                    catch (IOException e)
+//                    {
+//                        e.printStackTrace();
+//                        encryptionStatusLabel.setText("Encryption Status: [FAILED]");
+//                    }
+//
+//                    encryptionStatusLabel.setText("Encryption Status: [COMPLETED]");
+//                }
+//            }
+//        });
 
         ////////////////
         ///DECRYPTION///
