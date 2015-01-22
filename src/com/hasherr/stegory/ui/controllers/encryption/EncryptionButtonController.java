@@ -2,6 +2,7 @@ package com.hasherr.stegory.ui.controllers.encryption;
 
 import com.hasherr.stegory.crypto.EncryptionTool;
 import com.hasherr.stegory.ui.controllers.ComponentController;
+import com.hasherr.stegory.ui.controllers.ExtensionChecker;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,17 +14,16 @@ import java.io.IOException;
 /**
  * Created by Evan on 1/21/2015.
  */
-public class EncryptionController extends ComponentController implements ExtensionChecker
+public class EncryptionButtonController extends ComponentController implements ExtensionChecker
 {
     private EncryptionTool encryptionTool;
     private SelectImageUIController carrierController, messageController;
 
-    public EncryptionController(EncryptionTool encryptionTool, SelectImageUIController carrierController,
-                SelectImageUIController messageController)
+    public EncryptionButtonController(SelectImageUIController carrierController, SelectImageUIController messageController)
     {
-        this.encryptionTool = encryptionTool;
         this.carrierController = carrierController;
         this.messageController = messageController;
+        encryptionTool = new EncryptionTool();
     }
 
     @Override

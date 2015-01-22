@@ -2,7 +2,7 @@ package com.hasherr.stegory.ui.forms;
 
 import com.hasherr.stegory.crypto.DecryptionTool;
 import com.hasherr.stegory.crypto.EncryptionTool;
-import com.hasherr.stegory.ui.controllers.encryption.EncryptionController;
+import com.hasherr.stegory.ui.controllers.encryption.EncryptionButtonController;
 import com.hasherr.stegory.ui.controllers.encryption.SelectImageUIController;
 
 import javax.imageio.ImageIO;
@@ -50,65 +50,27 @@ public class MainForm
     private BufferedImage carrier, message;
     private JFileChooser fileChooser;
     private ButtonGroup encryptionFileFormatButtonGroup;
-    private EncryptionTool encryptionTool;
-    private DecryptionTool decryptionTool;
 
-    private SelectImageUIController carrierSelectionController, messageSelectionController;
 
     public MainForm() throws IOException
     {
         fileChooser = new JFileChooser();
-        encryptionTool = new EncryptionTool();
-        decryptionTool = new DecryptionTool();
         encryptionFileFormatButtonGroup = new ButtonGroup();
         defineButtonGroupButtons();
 
-        carrierSelectionController = new SelectImageUIController(carrierImagePathLabel, carrierImageWidthLabel,
-                carrierImageHeightLabel);
-        messageSelectionController = new SelectImageUIController(messageImagePathLabel, messageImageWidthLabel,
-                messageImageHeightLabel);
+        SelectImageUIController carrierSelectionController = new SelectImageUIController(carrierImagePathLabel,
+                carrierImageWidthLabel, carrierImageHeightLabel);
+        SelectImageUIController messageSelectionController = new SelectImageUIController(messageImagePathLabel,
+                messageImageWidthLabel, messageImageHeightLabel);
+        EncryptionButtonController encryptionButtonController = new EncryptionButtonController(carrierSelectionController,
+                messageSelectionController);
 
-        ////////////////
-        ///ENCRYPTION///
-        ////////////////
+        // Encryption buttons & controllers.
         selectCarrierImageButton.addActionListener(carrierSelectionController);
         selectMessageImageButton.addActionListener(messageSelectionController);
+        encryptButton.addActionListener(encryptionButtonController);
 
-        encryptButton.addActionListener(new EncryptionController(encryptionTool, carrierSelectionController,
-                messageSelectionController));
-
-//        encryptButton.addActionListener(new ActionListener()
-//        {
-//            @Override
-//            public void actionPerformed(ActionEvent event)
-//            {
-//                int response = fileChooser.showSaveDialog(encryptButton);
-//                encryptionStatusLabel.setText("Encryption Status: [PENDING]");
-//                if (response == JFileChooser.APPROVE_OPTION)
-//                {
-//                    String filePath = fileChooser.getSelectedFile().toString();
-//                    try
-//                    {
-//                        BufferedImage encryptedImage = new EncryptionTool().encryptMessage(carrier, message);
-//                        if (filePath.substring(filePath.length() - 4, filePath.length()).toLowerCase().equals(".jpg"))
-//                            ImageIO.write(encryptedImage, "JPG", fileChooser.getSelectedFile());
-//                        else
-//                            ImageIO.write(encryptedImage, "JPG", new File(fileChooser.getSelectedFile() + ".jpg"));
-//                    }
-//                    catch (IOException e)
-//                    {
-//                        e.printStackTrace();
-//                        encryptionStatusLabel.setText("Encryption Status: [FAILED]");
-//                    }
-//
-//                    encryptionStatusLabel.setText("Encryption Status: [COMPLETED]");
-//                }
-//            }
-//        });
-
-        ////////////////
-        ///DECRYPTION///
-        ////////////////
+        // Decryption buttons & controllers.
         selectCarrierImage.addActionListener(new ActionListener()
         {
             @Override
@@ -168,7 +130,7 @@ public class MainForm
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException
     {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        JFrame frame = new JFrame("Stegory v0.2");
+        JFrame frame = new JFrame("Stegory v0.35");
         frame.setContentPane(new MainForm().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
