@@ -1,4 +1,4 @@
-package com.hasherr.stegory.ui.controllers;
+package com.hasherr.stegory.ui.controllers.parent;
 
 /**
  * Created by Evan on 1/21/2015.

@@ -1,4 +1,4 @@
-package com.hasherr.stegory.ui.controllers;
+package com.hasherr.stegory.ui.controllers.parent;
 
 import com.hasherr.stegory.crypto.DecryptionTool;
 import com.hasherr.stegory.crypto.EncryptionTool;

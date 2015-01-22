@@ -1,16 +1,10 @@
 package com.hasherr.stegory.ui.forms;
 
-import com.hasherr.stegory.crypto.DecryptionTool;
-import com.hasherr.stegory.crypto.EncryptionTool;
-import com.hasherr.stegory.ui.controllers.encryption.EncryptionButtonController;
-import com.hasherr.stegory.ui.controllers.encryption.SelectImageUIController;
+import com.hasherr.stegory.ui.controllers.DecryptionButtonController;
+import com.hasherr.stegory.ui.controllers.EncryptionButtonController;
+import com.hasherr.stegory.ui.controllers.SelectImageUIController;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -46,82 +40,30 @@ public class MainForm
     private JRadioButton BMPRadioButton;
     private JProgressBar progressBar1;
     private JProgressBar progressBar2;
-
-    private BufferedImage carrier, message;
-    private JFileChooser fileChooser;
     private ButtonGroup encryptionFileFormatButtonGroup;
 
 
     public MainForm() throws IOException
     {
-        fileChooser = new JFileChooser();
-        encryptionFileFormatButtonGroup = new ButtonGroup();
         defineButtonGroupButtons();
 
-        SelectImageUIController carrierSelectionController = new SelectImageUIController(carrierImagePathLabel,
-                carrierImageWidthLabel, carrierImageHeightLabel);
-        SelectImageUIController messageSelectionController = new SelectImageUIController(messageImagePathLabel,
-                messageImageWidthLabel, messageImageHeightLabel);
-        EncryptionButtonController encryptionButtonController = new EncryptionButtonController(carrierSelectionController,
-                messageSelectionController);
+        SelectImageUIController carrierSelectionController = new SelectImageUIController(carrierImagePathLabel, carrierImageWidthLabel, carrierImageHeightLabel);
+        SelectImageUIController messageSelectionController = new SelectImageUIController(messageImagePathLabel, messageImageWidthLabel, messageImageHeightLabel);
+        EncryptionButtonController encryptionButtonController = new EncryptionButtonController(carrierSelectionController, messageSelectionController);
+        SelectImageUIController decryptionCarrierSelectionController = new SelectImageUIController(decryptionCarrierImagePath, decryptionCarrierImageWidth, decryptionCarrierImageHeight);
+        DecryptionButtonController decryptionButtonController = new DecryptionButtonController(decryptionCarrierSelectionController);
 
         // Encryption buttons & controllers.
         selectCarrierImageButton.addActionListener(carrierSelectionController);
         selectMessageImageButton.addActionListener(messageSelectionController);
         encryptButton.addActionListener(encryptionButtonController);
-
-        // Decryption buttons & controllers.
-        selectCarrierImage.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent event)
-            {
-                int response = fileChooser.showOpenDialog(selectCarrierImage);
-
-                if (response == JFileChooser.APPROVE_OPTION)
-                {
-                    decryptionCarrierImagePath.setText("Image path: " + fileChooser.getSelectedFile());
-                    try
-                    {
-                        carrier = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
-                        decryptionCarrierImageWidth.setText("Image width: " + carrier.getWidth());
-                        decryptionCarrierImageHeight.setText("Image height: " + carrier.getHeight());
-//                        decryptionPayloadWidthLabel.setText("Payload width: " + decryptionTool.getEncryptedWidth());
-//                        decryptionPayloadHeightLabel.setText("Payload height: " + decryptionTool.getEncryptedHeight());
-                        
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        decryptButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent event)
-            {
-                int response = fileChooser.showSaveDialog(decryptButton);
-
-                if (response == JFileChooser.APPROVE_OPTION)
-                {
-                    try
-                    {
-                        message = decryptionTool.decryptMessage(carrier);
-                        ImageIO.write(message, "JPG", new File(fileChooser.getSelectedFile().getAbsolutePath()));
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        selectCarrierImage.addActionListener(decryptionCarrierSelectionController);
+        decryptButton.addActionListener(decryptionButtonController);
     }
 
     private void defineButtonGroupButtons()
     {
+        encryptionFileFormatButtonGroup = new ButtonGroup();
         encryptionFileFormatButtonGroup.add(PNG24RadioButton);
         encryptionFileFormatButtonGroup.add(JPEGRadioButton);
         encryptionFileFormatButtonGroup.add(BMPRadioButton);

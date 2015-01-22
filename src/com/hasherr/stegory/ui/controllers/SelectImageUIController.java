@@ -1,6 +1,6 @@
-package com.hasherr.stegory.ui.controllers.encryption;
+package com.hasherr.stegory.ui.controllers;
 
-import com.hasherr.stegory.ui.controllers.ImageDataComponentController;
+import com.hasherr.stegory.ui.controllers.parent.ImageDataComponentController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

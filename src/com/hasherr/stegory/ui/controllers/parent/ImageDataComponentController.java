@@ -1,4 +1,4 @@
-package com.hasherr.stegory.ui.controllers;
+package com.hasherr.stegory.ui.controllers.parent;
 
 import javax.swing.*;
 
