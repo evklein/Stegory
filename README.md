@@ -8,7 +8,7 @@
 ### Who do I talk to? ###
 
 * Stegory is headed by me, Evan Klein.
-* You can reach me by shooting an email to eklein217@gmail.com
+* You can reach me by using my contact page at http://hasherr.com/contact-me/
 
 ### Future Plans ###
 
