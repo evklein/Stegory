@@ -17,7 +17,7 @@ import java.io.IOException;
 public class DecryptionButtonController extends ComponentController implements ExtensionChecker
 {
     private DecryptionTool decryptionTool;
-    private BufferedImage carrier, message;
+    private BufferedImage message;
     private SelectImageUIController decryptionSelectionController;
 
     public DecryptionButtonController(SelectImageUIController decryptionSelectionController)
@@ -36,7 +36,7 @@ public class DecryptionButtonController extends ComponentController implements E
             try
             {
                 message = decryptionTool.decryptMessage(decryptionSelectionController.getImage());
-                ImageIO.write(message, "JPG", new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                ImageIO.write(message, "PNG", new File(fileChooser.getSelectedFile().getAbsolutePath()));
             }
             catch (IOException e)
             {

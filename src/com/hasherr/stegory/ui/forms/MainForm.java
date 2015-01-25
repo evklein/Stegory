@@ -40,6 +40,8 @@ public class MainForm
     private JRadioButton BMPRadioButton;
     private JProgressBar progressBar1;
     private JProgressBar progressBar2;
+    private JRadioButton RAWRadioButton;
+    private JRadioButton TGARadioButton;
     private ButtonGroup encryptionFileFormatButtonGroup;
 
     /**
