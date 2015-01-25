@@ -42,15 +42,40 @@ public class MainForm
     private JProgressBar progressBar2;
     private ButtonGroup encryptionFileFormatButtonGroup;
 
-
-    public MainForm() throws IOException
+    /**
+     * Initializes a new MainForm and initializes other parts of the class, such as the buttons and their controller
+     * groups, as well as various button groupings.
+     */
+    public MainForm()
     {
-        defineButtonGroupButtons();
+        defineButtonGroups();
+        defineControllerStructure();
+    }
 
-        SelectImageUIController carrierSelectionController = new SelectImageUIController(carrierImagePathLabel, carrierImageWidthLabel, carrierImageHeightLabel);
-        SelectImageUIController messageSelectionController = new SelectImageUIController(messageImagePathLabel, messageImageWidthLabel, messageImageHeightLabel);
-        EncryptionButtonController encryptionButtonController = new EncryptionButtonController(carrierSelectionController, messageSelectionController);
-        SelectImageUIController decryptionCarrierSelectionController = new SelectImageUIController(decryptionCarrierImagePath, decryptionCarrierImageWidth, decryptionCarrierImageHeight);
+    /**
+     * Define button groups for various radio buttons.
+     */
+    private void defineButtonGroups()
+    {
+        encryptionFileFormatButtonGroup = new ButtonGroup();
+        encryptionFileFormatButtonGroup.add(PNG24RadioButton);
+        encryptionFileFormatButtonGroup.add(JPEGRadioButton);
+        encryptionFileFormatButtonGroup.add(BMPRadioButton);
+    }
+
+    /**
+     * Assigns each necessary component their specialized controller to control their behavior.
+     */
+    private void defineControllerStructure()
+    {
+        SelectImageUIController carrierSelectionController = new SelectImageUIController(carrierImagePathLabel,
+                carrierImageWidthLabel, carrierImageHeightLabel);
+        SelectImageUIController messageSelectionController = new SelectImageUIController(messageImagePathLabel,
+                messageImageWidthLabel, messageImageHeightLabel);
+        EncryptionButtonController encryptionButtonController = new EncryptionButtonController(carrierSelectionController,
+                messageSelectionController);
+        SelectImageUIController decryptionCarrierSelectionController = new SelectImageUIController(decryptionCarrierImagePath,
+                decryptionCarrierImageWidth, decryptionCarrierImageHeight);
         DecryptionButtonController decryptionButtonController = new DecryptionButtonController(decryptionCarrierSelectionController);
 
         // Encryption buttons & controllers.
@@ -61,18 +86,10 @@ public class MainForm
         decryptButton.addActionListener(decryptionButtonController);
     }
 
-    private void defineButtonGroupButtons()
-    {
-        encryptionFileFormatButtonGroup = new ButtonGroup();
-        encryptionFileFormatButtonGroup.add(PNG24RadioButton);
-        encryptionFileFormatButtonGroup.add(JPEGRadioButton);
-        encryptionFileFormatButtonGroup.add(BMPRadioButton);
-    }
-
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException
     {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        JFrame frame = new JFrame("Stegory v0.35");
+        JFrame frame = new JFrame("Stegory v0.37");
         frame.setContentPane(new MainForm().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

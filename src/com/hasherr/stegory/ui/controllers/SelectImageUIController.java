@@ -33,7 +33,7 @@ public class SelectImageUIController extends ImageDataComponentController
 
             try
             {
-                setImage(ImageIO.read(fileChooser.getSelectedFile()));
+                image = ImageIO.read(fileChooser.getSelectedFile());
                 imageWidthLabel.setText("Width: " + image.getWidth());
                 imageHeightLabel.setText("Height: " + image.getHeight());
             }
@@ -42,11 +42,6 @@ public class SelectImageUIController extends ImageDataComponentController
                 e.printStackTrace();
             }
         }
-    }
-
-    public void setImage(BufferedImage image)
-    {
-        this.image = image;
     }
 
     public BufferedImage getImage()
