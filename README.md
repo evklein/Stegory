@@ -12,6 +12,20 @@
 
 ### Future Plans ###
 
-* ~~removal of width/height fields in the decryption section~~
-* Add support for multiple image types (JPEG, BMP)
+* Add support for multiple image types (BMP, TGA, RAW)
 * Splash Screen with official logo and information
+
+### Notes ###
+
+<h3>JPEG</h3>
+<p>After multiple tests and some online research, JPEG Steganography will not be included within Stegory. Due to the
+compression of JPEG images, color values become very distorted. Encryption works well enough, with the program spitting
+out an encrypted image that also happens to have quite a bit of loss due to the compression. While I have no doubt that
+other languages may have the functionality to do this due to having a native 'Bitmap' class where the values can just be
+copied over, I am not going to attempt to solve JPEG Steganography due to the fact that I would have to modify the
+compression method itself in order to make decryption work. The payoff would not be worth it due to the distortion from
+compression becoming greater and greater every time the image is encrypted/decrypted.</p>
+
+<h3>Grayscale</h3>
+<p>It turns out that using grayscale messaging for LSB encryption or variants of it <b>does not work</b>. This is due to
+the fact that grayscale relies on all the RGB values of any given pixel being the same.  
