@@ -12,7 +12,7 @@ Stegory uses a form of least significant bit encryption known as 3-2-3 encryptio
 You can find more information on how it really works in [this blog post.](http://www.evklein.com/blog/Steganography)
 
 ## Status ##
-Stegory is currently in version 0.7, but development has officially deceased. I do plan to eventually revisit the project to implement further functionality and add some features, but there are no official plans in place currently.
+Stegory is currently in version 0.7, but development has officially ceased. I do plan to eventually revisit the project to implement further functionality and add some features, but there are no official plans in place currently.
 
 ### Who do I talk to? ###
 
